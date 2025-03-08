@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lời Chúc Ngọt Ngào</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #ffe6f2, #ff99cc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        /* Trái tim lớn */
+        .heart {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            clip-path: path("M50,15 Q25,0 10,25 Q-10,50 50,100 Q110,50 90,25 Q75,0 50,15");
+            opacity: 0;
+            transform: scale(0);
+            animation: bloom 1s ease-in-out forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes bloom {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.5);
+            }
+        }
+
+        /* Trái tim nhỏ rơi xuống */
+        .falling-heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: white; /* Đổi sang màu trắng */
+    clip-path: path("M10,3 Q5,-3 0,5 Q-5,12 10,25 Q25,12 20,5 Q15,-3 10,3");
+    animation: fall 3s linear forwards;
+}
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Lời chúc màu trắng */
+        .message {
+            position: absolute;
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeIn 3s ease-in forwards;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart" id="mainHeart"></div>
+
+    <script>
+        let messageDisplayed = false; // Biến kiểm tra xem lời chúc đã xuất hiện chưa
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("falling-heart");
+            document.body.appendChild(heart);
+            
+            // Random vị trí xuất phát
+            const startX = Math.random() * window.innerWidth;
+            heart.style.left = startX + "px";
+            heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+
+            // Khi rơi chạm đất, nếu chưa có lời chúc nào xuất hiện thì tạo một lần duy nhất
+            setTimeout(() => {
+                heart.remove();
+                if (!messageDisplayed) {
+                    createMessage();
+                    messageDisplayed = true;
+                }
+            }, 3000);
+        }
+
+        function createMessage() {
+            const messages = [
+                "Chúc bạn luôn vui vẻ!",
+                "Hạnh phúc và thành công!",
+                
+                "Chúc một ngày tràn đầy yêu thương!",
+            ];
+            const message = document.createElement("div");
+            message.classList.add("message");
+
+            // Chọn một lời chúc ngẫu nhiên và thêm chữ ký "LQH"
+            message.innerHTML = messages[Math.floor(Math.random() * messages.length)] + "<br>— LQH —";
+            message.style.left = "50%";
+            message.style.top = "80vh";
+            message.style.transform = "translateX(-50%)";
+            document.body.appendChild(message);
+        }
+
+        // Sau 2 giây, trái tim lớn xuất hiện và trái tim nhỏ bắt đầu rơi
+        setTimeout(() => {
+            document.getElementById("mainHeart").style.opacity = "1";
+            setInterval(createHeart, 500);
+        }, 2000);
+    </script>
+</body>
+</html>
